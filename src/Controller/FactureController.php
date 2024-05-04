@@ -85,10 +85,12 @@ class FactureController extends AbstractController
     }
 
     #[Route('/listfact', name: 'list_Facture')]
-    public function listFacture(FactureRepository $factrepository): Response
+    public function listFacture(FactureRepository $facturepository): Response
     {
-        return $this->render('facture\list.html.twig', [
-            'factures' => $factrepository->findAll(),
+        $factures = $facturepository->findAll(); 
+        
+        return $this->render('facture/list.html.twig', [
+            'factures' => $factures,
         ]);
     }
 
@@ -110,17 +112,21 @@ class FactureController extends AbstractController
 
     }
     #[Route('/deleteFacture/{id}', name: 'Facture_delete')]
-    public function deleteFact(Request $request, $id, ManagerRegistry $manager, FactureRepository $factrepository): Response
-    {
-        $em = $manager->getManager();
-        $fact = $factrepository->find($id);
-        
-            $em->remove($fact);
-            $em->flush();
+      public function deleteFact(Request $request, $id, ManagerRegistry $manager, FactureRepository $facturepository): Response
+       {
+          $em = $manager->getManager();
+          $fact = $facturepository->find($id);
+    
+        if ($fact === null) {
+             throw $this->createNotFoundException('Facture not found');
+        }
+    
+        $em->remove($fact);
+        $em->flush();
 
         return $this->render('facture/list.html.twig');
     }
-
+    
     #[Route('/RechercheDQL', name:'Search')]
     function RechercheDQL(FactureRepository $repo,Request $request){
         $min=$request->get('min');
