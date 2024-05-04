@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste produits {% endblock %}
+
+{% block body%}
+
+    <h1>Produits Ajoutés</h1>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            })
+        });
+    </script>
+
+    {% if produits is not empty %}
+        <input type="search" id="myInput" class="form-control pl-6" placeholder="Search reponse"/>
+        <table class="table" id="mytable">
+            <thead>
+                <tr>
+                    <th>Nombre des produits</th>
+                    <th>Description</th>
+                    <th>Prix</th>
+                    <th>Name</th>
+                    <th>Categorie</th>
+                    <th>Photo</th>
+                    <th>Actions</th>           
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.getNbProduit() }}</td>
+                        <td>{{ produit.description }}</td>
+                        <td>{{ produit.prix }}</td>
+                        <td>{{ produit.name }}</td>
+                        <td>{{ produit.categorie }}</td>
+                        <td>{{ produit.photo }}</td>
+                        <td>
+                            <a href="{{ path('Produit_delete', {'id': produit.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit  ?')">Supprimer</a>
+                            <a href="{{ path('produit_edit', {'id': produit.id}) }}" class="btn btn-primary">Modifier</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun produit ajouté pour le moment.</p>
+    {% endif %}
+
+{% endblock %}

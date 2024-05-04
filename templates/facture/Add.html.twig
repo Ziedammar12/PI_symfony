@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajouter une facture {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('public/assets/css/main.css') }}">
+    <style>
+        .custom-form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .loading, .error-message, .sent-message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .loading {
+            background-color: #ffc107; /* Jaune */
+        }
+        .error-message {
+            background-color: #dc3545; /* Rouge */
+        }
+        .sent-message {
+            background-color: #28a745; /* Vert */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<div class="custom-form-container">
+    <h1>Ajouter une facture</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div class="form-group">
+        {{ form_label(form.prix_unitaire, 'Prix unitaire') }}
+        {{ form_widget(form.prix_unitaire) }}
+        {{ form_errors(form.prix_unitaire) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.quantite, 'Quantité') }}
+        {{ form_widget(form.quantite) }}
+        {{ form_errors(form.quantite) }}
+    </div> 
+
+    <div class="form-group">
+        {{ form_label(form.montant_ht, 'Montant HT') }}
+        {{ form_widget(form.montant_ht) }}
+        {{ form_errors(form.montant_ht) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.tva, 'TVA') }}
+        {{ form_widget(form.tva) }}
+        {{ form_errors(form.tva) }}
+    </div>
+    
+    <div class="form-group">
+        {{ form_label(form.montant_ttc, 'Montant TTC') }}
+        {{ form_widget(form.montant_ttc) }}
+        {{ form_errors(form.montant_ttc) }}
+    </div>    
+
+    <div class="form-group">
+        {{ form_label(form.date, 'Date') }}
+        {{ form_widget(form.date) }}
+        {{ form_errors(form.date) }}
+    </div>    
+
+    <div class="form-group">
+        {{ form_label(form.type_devise, 'Type de devise') }}
+        {{ form_widget(form.type_devise) }}
+        {{ form_errors(form.type_devise) }}
+    </div>    
+
+    <div class="form-group">
+        <button type="submit">Ajouter</button>
+    </div>
+                
+    {{ form_end(form) }}
+
+    <div class="loading">Chargement...</div>
+    <div class="error-message"></div>
+    <div class="sent-message">Votre facture a été ajoutée avec succès. Merci!</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-facture-form').on('submit', function(event) {
+                event.preventDefault(); // Empêche la soumission par défaut du formulaire
+
+                var formData = $(this).serialize(); // Récupère les données du formulaire
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('add_Fact') }}',
+                    data: formData,
+                    success: function(response) {
+                        // Affiche le message de réussite dynamique
+                        $('.sent-message').text(response.message);
+                        $('.sent-message').show();
+                    },
+                    error: function(xhr, status, error) {
+                        // Affiche le message d'erreur dynamique
+                        $('.error-message').text('Une erreur s\'est produite lors de l\'ajout de la facture.');
+                        $('.error-message').show();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

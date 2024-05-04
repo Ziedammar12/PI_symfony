@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier Facture {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .custom-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .loading, .error-message, .success-message {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loading {
+            background-color: #f0ad4e; /* Couleur jaune */
+        }
+        .error-message {
+            background-color: #d9534f; /* Couleur rouge */
+        }
+        .success-message {
+            background-color: #5cb85c; /* Couleur verte */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="custom-form-container">
+        <h1>Modifier Facture</h1>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('list_Facture') }}" class="btn btn-secondary">Retour à la liste des factures</a>
+
+        <div class="loading">Chargement...</div>
+        <div class="error-message"></div>
+        <div class="success-message">Les modifications ont été enregistrées avec succès.</div>
+    </div>
+
+{% endblock %}

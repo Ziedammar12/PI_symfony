@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste factures {% endblock %}
+
+
+{% block body%}
+
+    <h1>Factures Ajoutées</h1>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+$("#myInput").on("keyup", function () {
+
+var value = $(this).val().toLowerCase();
+
+$("#myTable tr").filter(function () {
+
+$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+
+});
+
+})
+
+});
+
+    </script>
+
+    
+
+    {% if factures is not empty %}
+
+   <input type="search" id="myInput" class="form-control pl-6" placeholder="Search reponse"/>
+
+                 
+
+        <table  class="table" id ="mytable">
+
+            <thead>
+
+                <tr>
+
+
+                   
+                    <th>Prix Unitaire</th>
+                    <th>Quantité</th>
+                    <th>Montant HT</th>
+                    <th>TVA</th>
+                    <th>Montant TTC</th>
+                    <th>Date</th>
+                    <th>Type Devise</th>
+
+                    <th>Actions</th>       
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for facture in factures %}
+
+                        <td>{{ facture.getPrixUnitaire() }}</td>
+                        <td>{{ facture.quantite }}</td>
+                        <td>{{ facture.getMontantHt() }}</td>
+                        <td>{{ facture.tva }}</td>
+                        <td>{{ facture.getMontantTtc() }}</td>
+                        <td>{{ facture.date ? facture.date|date('Y-m-d') : '' }}</td>
+                        <td>{{ facture.getTypeDevise() }}</td>
+
+                        <td>
+
+                            <a href="{{ path('Facture_delete', {'id': facture.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette facture ?')">Supprimer</a>
+                            <a href="{{ path('facture_edit', {'id': facture.id}) }}" class="btn btn-primary">modifier</a>
+                            <a href="{{ path('facture_pdf', {'id': facture.id}) }}" class="btn btn-success">Télécharger PDF</a>
+
+                        </td>
+                        </tr>
+
+                   {% endfor %}
+
+                        
+
+ 
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <p>Aucune facture ajoutée pour le moment.</p>
+
+        
+
+    {% endif %}
+
+    
+
+{% endblock %}
