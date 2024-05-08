@@ -38,8 +38,7 @@ class Produit
     private ?string $categorie = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\File(mimeTypes: ["image/jpeg","image/jpg", "image/png"])]
-    private ?File $photo = null;
+    private $photo = null;
 
     #[ORM\ManyToMany(targetEntity: Facture::class, inversedBy: 'produits')]
     private Collection $facture;
@@ -114,17 +113,29 @@ class Produit
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getPhoto()
+
     {
-        return $this->photo ? $this->photo->getFilename() : null;
+
+        return $this->photo;
+
     }
 
 
-    public function setPhoto(?File $photo): self
+
+
+    public function setPhoto($photo)
+
     {
+
         $this->photo = $photo;
 
+
+
+
         return $this;
+
     }
+
 
 }

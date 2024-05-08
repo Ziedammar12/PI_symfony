@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %} Ajouter un produit {% endblock %}
 
-{% block css %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('public/assets/css/main.css') }}">
+{% block body %}
+
     <style>
         .custom-form-container {
             max-width: 500px;
@@ -64,9 +63,6 @@
             background-color: #28a745; /* Vert */
         }
     </style>
-{% endblock %}
-
-{% block body %}
 
 <div class="custom-form-container">
     <h1>Ajouter un produit</h1>

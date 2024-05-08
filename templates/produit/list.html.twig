@@ -41,7 +41,7 @@
                         <td>{{ produit.prix }}</td>
                         <td>{{ produit.name }}</td>
                         <td>{{ produit.categorie }}</td>
-                        <td>{{ produit.photo }}</td>
+                        <td><img src="{{ asset('uploads/' ~ produit.photo) }}" style="width:100px; height:100px;" alt=""></td>
                         <td>
                             <a href="{{ path('Produit_delete', {'id': produit.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit  ?')">Supprimer</a>
                             <a href="{{ path('produit_edit', {'id': produit.id}) }}" class="btn btn-primary">Modifier</a>

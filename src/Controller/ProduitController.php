@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class ProduitController extends AbstractController
@@ -43,11 +44,12 @@ class ProduitController extends AbstractController
     }
     return $this->render('produit/index.html.twig', ['form' => $form->createView(),]);
 }
-    #[Route('/showProduit/{name}', name: 'show_Produit')]
-    public function showProduit($name)
+    #[Route('/showProduit', name: 'show_Produit')]
+    public function showProduit(ProduitRepository $prodrepository) : Response
     {
-        return $this->render('produit/showProduit.html.twig', [
-            'name' => $name,
+        $produits = $prodrepository->findAll();
+        return $this->render('produit/show.html.twig', [
+            'produits' => $produits,
         ]);
     }
    
@@ -113,7 +115,8 @@ class ProduitController extends AbstractController
         $produits = $prodrepository->findAll();
 
          return $this->render('produit\list.html.twig', [
-        'produits' => $produits,
+             'produits' => $produits,
+             
          ]);
      }
 
@@ -180,6 +183,24 @@ class ProduitController extends AbstractController
         ]);
     }
     
+    #[Route('/test-statistique', name: 'test_statistique')] 
+    public function testStatistique(ProduitRepository $produitRepository): Response
+    {
+        $produits = $produitRepository->findAll();
+
+        $statistiques = $this->calculateStatistics($produits);
+
+        dump($statistiques);
+
+        return new Response('Test de statistique réussi ! Vérifiez la console pour voir les résultats.');
+    }
+    #[Route('/api/produit/statistiques', name: 'api_produit_statistiques')]
+    public function produitStatistiques(ProduitRepository $produitRepository): JsonResponse
+    {
+        $statistics = $produitRepository->getSalesStatistics();
+
+        return $this->json($statistics);
+    }
        
     private function calculateStatistics($produits)
     {
@@ -193,17 +214,7 @@ class ProduitController extends AbstractController
         return $statistics;
     }
     
-#[Route('/test-statistique', name: 'test_statistique')] 
-    public function testStatistique(ProduitRepository $produitRepository): Response
-    {
-        $produits = $produitRepository->findAll();
 
-        $statistiques = $this->calculateStatistics($produits);
-
-        dump($statistiques);
-
-        return new Response('Test de statistique réussi ! Vérifiez la console pour voir les résultats.');
-    }
 }
 
 

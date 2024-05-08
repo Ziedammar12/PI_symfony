@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des ventes de produits{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div id="salesStatistics">
+        <!-- Les statistiques seront affichées ici -->
+        {% block statistics %}
+            {% include 'partials/statistics.html.twig' %}
+        {% endblock %}
+    </div>
+</div>
+
+<script>
+    // JavaScript pour récupérer les statistiques via AJAX et les afficher
+    function getSalesStatistics() {
+        fetch('/api/produit/statistiques')
+        .then(response => response.json())
+        .then(data => {
+            // Appel d'une fonction pour afficher les statistiques
+            displaySalesStatistics(data);
+        })
+        .catch(error => console.error('Erreur lors de la récupération des statistiques des ventes de produits:', error));
+    }
+
+    function displaySalesStatistics(statistics) {
+        var salesStatisticsDiv = document.getElementById('salesStatistics');
+        salesStatisticsDiv.innerHTML = ''; // Nettoyer le contenu précédent
+
+        if (statistics.length === 0) {
+            salesStatisticsDiv.innerHTML = 'Aucune donnée disponible.';
+        } else {
+            var html = '<h2>Statistiques des ventes de produits</h2>';
+            html += '<ul>';
+            statistics.forEach(function(statistic) {
+                html += '<li>' + statistic.name + ': ' + statistic.totalSales + ' ventes</li>';
+            });
+            html += '</ul>';
+            salesStatisticsDiv.innerHTML = html;
+        }
+    }
+
+    // Appel de la fonction pour récupérer et afficher les statistiques au chargement de la page
+    window.onload = function() {
+        getSalesStatistics();
+    };
+</script>
+{% endblock %}

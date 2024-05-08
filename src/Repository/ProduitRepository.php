@@ -6,6 +6,10 @@ use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * @extends ServiceEntityRepository<Produit>
  *
@@ -19,6 +23,21 @@ class ProduitRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Produit::class);
+    }
+
+    public function getSalesStatistics(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p.name, SUM(f.quantite) AS totalSales
+            FROM App\Entity\Produit p
+            JOIN p.facture f
+            GROUP BY p.id
+            ORDER BY totalSales DESC'
+        );
+
+        return $query->getResult();
     }
 
 //    /**
