@@ -22,7 +22,7 @@
 
                 <div id="google_translate_element"></div>
 
-                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des Exposees</h4>
+                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des Produits</h4>
 
             </div>
 
@@ -36,16 +36,11 @@
 
                             <img src="{{ asset('uploads/' ~ produit.photo) }}" style=" width:360px; height:250px; " alt="">
 
-                            <p><strong style="color:#696969">Nombre des produits:</strong> {{ produit.getNbProduit()}}</p>
-
-                            <p><strong style="color:#696969">Description:</strong> {{ produit.description }}</p>
-
-                            <p><strong style="color:#696969">Prix:</strong> {{ produit.prix }}</p>
+                            
                             
                             <p><strong style="color:#696969">Name:</strong> {{ produit.name }}</p>
                             
-                            <p><strong style="color:#696969">Catégorie:</strong> {{ produit.categorie }}</p>
-
+                            <a href="{{ path('Produit_details', {'id': produit.id}) }}" class="btn btn-primary">Afficher détails</a>
                         </div>
 
                     </div>

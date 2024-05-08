@@ -55,59 +55,59 @@ class ProduitController extends AbstractController
    
     
     #[Route('/produit/{id}', name: 'Produit_details')]
-    public function ProduitDetails($id)
-    {
-        $prod = null;
-        
-        foreach ($this->produits as $prodData) {
-            if ($prodData['id'] == $id) {
-                $prod = $prodData;
-            };
-        };
-        return $this->render('produit/show.html.twig', [
-            'produit' => $prod,
-            'id' => $id
-        ]);
+public function ProduitDetails($id, ProduitRepository $prodrepository)
+{
+    $prod = $prodrepository->find($id);
+
+    if (!$prod) {
+        throw $this->createNotFoundException('Produit not found');
     }
+
+    return $this->render('produit/showdetails.html.twig', [
+        'produit' => $prod,
+    ]);
+}
    
     #[Route('/addProd', name: 'add_Prod')]
-    public function addProd(ManagerRegistry $manager, Request $request, SluggerInterface $slugger): Response
+public function addProd(ManagerRegistry $manager, Request $request, SluggerInterface $slugger): Response
+{
+    $em = $manager->getManager();
+
+    $prod = new Produit();
+
+    $form = $this->createForm(ProduitType::class, $prod);
+    $form->handleRequest($request);
+    if (($form->isSubmitted() && $form->isValid()))
     {
-        $em = $manager->getManager();
-
-        $prod = new Produit();
-
-        $form = $this->createForm(ProduitType::class, $prod);
-        $form->handleRequest($request);
-        if (($form->isSubmitted() && $form->isValid()))
-        {
-            /** @var UploadedFile $photoFile */
+        /** @var UploadedFile $photoFile */
         $photoFile = $form->get('photo')->getData();
 
         if ($photoFile) {
             $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
-
+           
             try {
                 $photoFile->move(
-                    $this->getParameter('photos_directory'),
+                    $this->getParameter('uploads'),
                     $newFilename
                 );
             } catch (FileException $e) { }
 
-            $prod->setPhoto($photoFile);
+            $prod->setPhoto($newFilename);
         }
-            $em->persist($prod);
-            $em->flush();
+        
+        $em->persist($prod);
+        $em->flush();
 
-            return $this->redirectToRoute('add_Prod');
-        }
-        return $this->render('produit/Add.html.twig', [
-            'produit' => $prod,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('add_Prod');
     }
+    return $this->render('produit/Add.html.twig', [
+        'produit' => $prod,
+        'form' => $form->createView(),
+    ]);
+}
+
 
     #[Route('/list', name: 'list_Produit')]
      public function listProduit(ProduitRepository $prodrepository): Response

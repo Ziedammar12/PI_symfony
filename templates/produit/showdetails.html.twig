@@ -1,0 +1,132 @@
+{% extends 'front.html.twig' %}
+
+
+
+
+{% block title %}
+
+    Liste des Produits
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+<style>
+        .custom-form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .loading, .error-message, .sent-message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .loading {
+            background-color: #ffc107; /* Jaune */
+        }
+        .error-message {
+            background-color: #dc3545; /* Rouge */
+        }
+        .sent-message {
+            background-color: #28a745; /* Vert */
+        }
+    </style>
+
+
+    <div class="service">
+
+        <div class="custom-form-container">
+
+            <div class="section-header text-center">
+
+                <div id="google_translate_element"></div>
+
+                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des Produits</h4>
+
+            </div>
+
+            <div class="row">
+
+                
+
+                    <div class="col-lg-4 col-md-6 mb-4">
+
+                        <div class="service-item">
+
+                            <img src="{{ asset('uploads/' ~ produit.photo) }}" style=" width:360px; height:250px; " alt="">
+
+                            <p><strong style="color:#696969">Nombre des produits:</strong> {{ produit.getNbProduit()}}</p>
+
+                            <p><strong style="color:#696969">Description:</strong> {{ produit.description }}</p>
+
+                            <p><strong style="color:#696969">Prix:</strong> {{ produit.prix }}</p>
+
+                            <p><strong style="color:#696969">Catégorie:</strong> {{ produit.categorie }}</p>
+
+                            
+                            <p><strong style="color:#696969">Name:</strong> {{ produit.name }}</p>
+                            
+                        </div>
+
+                    </div>
+
+            
+
+
+            </div>
+            
+        </div>
+
+    </div>
+
+    <br>
+
+    
+
+
+
+
+{% endblock %}
