@@ -5,7 +5,3 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
-
-generate_qr:
-    path: /generate-qr
-    controller: App\Controller\QrCodeController::generateQrCode
