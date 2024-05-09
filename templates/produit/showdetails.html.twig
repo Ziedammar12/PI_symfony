@@ -99,13 +99,16 @@
                             <p><strong style="color:#696969">Description:</strong> {{ produit.description }}</p>
 
                             <p><strong style="color:#696969">Prix:</strong> {{ produit.prix }}</p>
+                            
+                            <p><strong style="color:#696969">Name:</strong> {{ produit.name }}</p>
 
                             <p><strong style="color:#696969">Catégorie:</strong> {{ produit.categorie }}</p>
 
-                            
-                            <p><strong style="color:#696969">Name:</strong> {{ produit.name }}</p>
-                            
+            
                         </div>
+                         
+                         <div id="qrcode"></div>
+
 
                     </div>
 
@@ -117,6 +120,30 @@
         </div>
 
     </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+
+    <script>
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width: 200,
+        height: 200
+    });
+
+    // Utilisez les données du produit pour générer le contenu du code QR
+    var produitData = {
+        Description: "{{ produit.description }}",
+        Prix: "{{ produit.prix }}"
+        Name: "{{ produit.name }}"
+        Categorie: "{{ produit.categorie }}"
+    };
+
+    // Convertir les données du produit en chaîne JSON
+    var produitJson = JSON.stringify(produitData);
+
+    // Générer le code QR avec les données du produit
+    qrcode.makeCode(produitJson);
+</script>
+
 
     <br>
 

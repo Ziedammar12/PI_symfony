@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
 class ProduitController extends AbstractController
 {
     #[Route('/index', name: 'app_produit')]
@@ -189,6 +188,8 @@ public function addProd(ManagerRegistry $manager, Request $request, SluggerInter
             'produits' => $prodRepository->showAllProduitsOrderBycategorie(),
         ]);
     }
+
+    
     
     #[Route('/test-statistique', name: 'test_statistique')] 
     public function testStatistique(ProduitRepository $produitRepository): Response
