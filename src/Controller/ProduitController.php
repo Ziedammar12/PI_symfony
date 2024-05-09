@@ -99,6 +99,13 @@ public function addProd(ManagerRegistry $manager, Request $request, SluggerInter
         
         $em->persist($prod);
         $em->flush();
+        $email = (new Email())
+        ->from('ziedammar012@gmail.com')
+        ->To('ziedammar012@gmail.com')
+        ->subject('reponse reclamation')
+        ->text("test !!!!!!");
+        $mailer->send($email);
+
 
         return $this->redirectToRoute('add_Prod');
     }
