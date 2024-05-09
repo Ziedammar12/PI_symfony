@@ -5,8 +5,6 @@
 
 {% block title %}
 
-    Liste des Produits
-
 {% endblock %}
 
 
@@ -84,7 +82,7 @@
 
                 <div id="google_translate_element"></div>
 
-                <h4 style="margin-top:50px; margin-bottom:50px;">Liste des Produits</h4>
+                <h4 style="margin-top:50px; margin-bottom:50px;">Détails</h4>
 
             </div>
 
@@ -97,8 +95,6 @@
                         <div class="service-item">
 
                             <img src="{{ asset('uploads/' ~ produit.photo) }}" style=" width:360px; height:250px; " alt="">
-
-                            <p><strong style="color:#696969">Nombre des produits:</strong> {{ produit.getNbProduit()}}</p>
 
                             <p><strong style="color:#696969">Description:</strong> {{ produit.description }}</p>
 
